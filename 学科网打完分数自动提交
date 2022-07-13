@@ -1,0 +1,43 @@
+from time import sleep
+import pyautogui
+from pynput import keyboard
+
+def abc( ):
+    pyautogui.keyDown('enter')  #按下回车键
+    pyautogui.keyUp('enter')
+    print("完成一题")
+#按下任何按键时，都会调用abc，其中一定会传一个值，就是键盘事件
+
+from pynput import keyboard
+
+def on_press(key):
+    '按下按键时执行。'
+    
+    try:
+        print('获得了 {0} 分'.format(
+            key.char))
+    except AttributeError:
+        print('获得了 {0} 分'.format(
+            key))
+    #通过属性判断按键类型。
+
+def on_release(key):
+    '松开按键时执行。'
+    if key == keyboard.Key.enter:
+        print("OK")
+    else:
+        sleep(0.2)
+        abc()
+
+    sleep(0.5)
+    
+    if key == keyboard.Key.esc:
+        # Stop listener
+        return False
+    
+
+# Collect events until released
+with keyboard.Listener(
+        on_press=on_press,
+        on_release=on_release) as listener:
+    listener.join()
